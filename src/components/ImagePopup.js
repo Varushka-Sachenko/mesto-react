@@ -1,16 +1,17 @@
 export default function ImagePopup(props) {
-    console.log(props)
+    //console.log(props)
     let statusOpened = ""
-	//console.log(props)
-	if (!props.onClose){
+	//console.log(props.card)
+	//console.log(props.card.length !== 0)
+	if (!props.onClose && props.card.length !== 0){
 		statusOpened = "popup_opened"
 		//console.log(statusOpened)
 	} 
-	if (!props.isOpen || props.onClose) {
+	else {
 		statusOpened = ""
 		//console.log(statusOpened)
 	}
-
+	//console.log(statusOpened)
 	const closePopups = props.onClosePopup
 
 	const closeEventListeners = (evt) => {
