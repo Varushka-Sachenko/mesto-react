@@ -2,10 +2,10 @@ import React from 'react'
 
 function Card(props) {
     function handleClick() {
-        console.log(props)
+        
         props.onCardClick(props.cardsToAdd);
     }  
-    //console.log(cardInfo)
+    
     return(
         <div className="element">
             <img className="element__image" alt="Изображение места" src={props.cardsToAdd.link} onClick={handleClick}/>

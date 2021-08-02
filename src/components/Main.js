@@ -1,21 +1,21 @@
 import React from 'react'
-import { classApi as Api } from '../utils/Api'
+import { classApi as api } from '../utils/Api'
 import Card from './Card';
 
 function Main(props) {
-   // console.log('Main', props)
+   
     const [userName, setUserName] = React.useState("");
     const [userDescription, setUserDescription] = React.useState("");
     const [userAvatar, setUserAvatar] = React.useState("");
 
-    const [cards, getAllCards] = React.useState([]);
+    const [cards, setCards] = React.useState([]);
 
     const [statusVisible, changeStatus] = React.useState("");
-    //console.log(Api)
+    
     React.useEffect(() => {
-        Api.loadUserInfo()
+        api.loadUserInfo()
             .then((res) => {
-                //console.log(res);
+                
                 setUserName(res.name);
                 setUserDescription(res.about);
                 setUserAvatar(res.avatar)
@@ -26,10 +26,10 @@ function Main(props) {
     }, [])
 
     React.useEffect(() => {
-        Api.getInitialCards()
+        api.getInitialCards()
             .then((res) => {
-                // console.log(res);
-                getAllCards(res)
+                
+                setCards(res)
             })
             .catch((err) => {
                 console.log(err);
@@ -37,17 +37,17 @@ function Main(props) {
     }, [])
     const profileAvatarHover = () => {
         changeStatus("profile__avatar-overlay_visible")
-        console.log(statusVisible)
+        
     }
     const profileAvatarHoverNot = () => {
         changeStatus("")
-        console.log(statusVisible)
+       
     }
 
     return (
         <main className="main">
             <section className="profile">
-                <div className="profile__avatar-container" onClick={props.onEditAvatar} onMouseOver={profileAvatarHover} onMouseOver={profileAvatarHoverNot}>
+                <div className="profile__avatar-container" onClick={props.onEditAvatar} onMouseOver={profileAvatarHover} onMouseOut={profileAvatarHoverNot}>
                     <img className="profile__avatar" src={userAvatar} alt="Аватар" />
                     <div className={`profile__avatar-overlay ${statusVisible}`}></div>
                 </div>
@@ -61,9 +61,9 @@ function Main(props) {
             </section>
             <section className="elements">
 
-                {cards.map((element, index) => {
-                   // console.log(props.onCardClick);
-                   return(<Card key={index} cardsToAdd={element} onCardClick={props.onCardClick}/>) 
+                {cards.map((element) => {
+                   
+                   return(<Card key={element._id} cardsToAdd={element} onCardClick={props.onCardClick}/>) 
                 })}
 
 

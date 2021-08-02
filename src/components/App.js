@@ -10,46 +10,35 @@ import ImagePopup from './ImagePopup'
 
 function App() {
 
-  const [isEditProfilePopupOpen, openEditProfilePopup] = React.useState(false);
-  const [isAddPlacePopupOpen, openAddPlacePopup] = React.useState(false);
-  const [isEditAvatarPopupOpen, openEditAvatarPopup] = React.useState(false);
-  const [isPopupCLosed, closeAllPopups] = React.useState(true);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
 
-  const [selectedCard, openImagePopup ] = React.useState([]);
+  const [selectedCard, setSelectedCard ] = React.useState({name:"", link:""});
 
   
 
   const handleEditAvatarClick = () => {
-    // const popupEditAvatar = new PopupWithForm('.popup_edit-avatar', () => { })
-    // popupEditAvatar.open()
-    openEditAvatarPopup(true)
-    closeAllPopups(false)
+    setIsEditAvatarPopupOpen(true)
   }
 
   const handleEditProfileClick = () => {
-    // const popupEditProfile = new PopupWithForm('.popup_field_edit', () => { }
-    // )
-    // popupEditProfile.open()
-    openEditProfilePopup(true)
-    closeAllPopups(false)
+    setIsEditProfilePopupOpen(true)
   }
 
   const handleAddPlaceClick = () => {
-    openAddPlacePopup(true)
-    closeAllPopups(false)
+    setIsAddPlacePopupOpen(true)
   }
 
-  const closePopups = () => {
-    closeAllPopups(true)
-    openAddPlacePopup(false)
-    openEditProfilePopup(false)
-    openEditAvatarPopup(false)
-    openImagePopup([])
+  const closeAllPopups = () => {
+    setIsAddPlacePopupOpen(false)
+    setIsEditProfilePopupOpen(false)
+    setIsEditAvatarPopupOpen(false)
+    setSelectedCard({name:"", link:""})
   }
 
   const handleCardClick = (card) => {
-    openImagePopup(card)
-    closeAllPopups(false)
+    setSelectedCard(card)
   }
   return (
     <div className="App">
@@ -59,7 +48,7 @@ function App() {
         <Main onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} />
         <Footer />
 
-        <PopupWithForm onClosePopup={closePopups} onClose={isPopupCLosed} isOpen={isEditProfilePopupOpen} title="Редактировать профиль" name="field_edit" children={
+        <PopupWithForm buttonText="Сохранить" onClose={closeAllPopups} isOpen={isEditProfilePopupOpen} title="Редактировать профиль" name="field_edit" children={
           <>
             <input name="name" className="form__field-text form__field-text_input_name" placeholder="Имя" type="text"
               size="40" id="username" required minLength="2" maxLength="40" />
@@ -70,7 +59,7 @@ function App() {
             <span id="status-error" className="status-error form__input-error"></span>
           </>
         } />
-        <PopupWithForm onClosePopup={closePopups} onClose={isPopupCLosed} isOpen={isAddPlacePopupOpen} title="Новое место" name="field_add" children={
+        <PopupWithForm buttonText="Создать"  onClose={closeAllPopups} isOpen={isAddPlacePopupOpen} title="Новое место" name="field_add" children={
           <>
             <input name="title" className="form__field-text form__field-text_input_title" placeholder="Название" type="text"
               size="40" id="nameplace" defaultValue="" required minLength="2" maxLength="30" />
@@ -80,14 +69,14 @@ function App() {
             <span id="linkplace-error" className="linkplace-error form__input-error"></span>
           </>
         } />
-        <PopupWithForm onClosePopup={closePopups} onClose={isPopupCLosed} isOpen={isEditAvatarPopupOpen} title="Обновить аватар" name="edit-avatar" children={
+        <PopupWithForm buttonText="Сохранить"  onClose={closeAllPopups} isOpen={isEditAvatarPopupOpen} title="Обновить аватар" name="edit-avatar" children={
           <>
             <input name="avatar" className="form__field-text form__field-text_input_avatar" placeholder="Ссылка на картинку" type="URL"
               size="40" defaultValue="" required />
           </>
         } />
-        <PopupWithForm onClosePopup={closePopups} onClose={isPopupCLosed} isOpen={false} title="Вы уверены?" name="delete-card" children="" />
-        <ImagePopup card={selectedCard} onClosePopup={closePopups} onClose={isPopupCLosed} />
+        <PopupWithForm buttonText="Да" onClose={closeAllPopups} isOpen={false} title="Вы уверены?" name="delete-card" children="" />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
     </div>
   );
