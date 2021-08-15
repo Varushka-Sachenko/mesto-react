@@ -2,39 +2,34 @@ import React from 'react'
 import { classApi as api } from '../utils/Api'
 import Card from './Card';
 
-function Main(props) {
-   
-    const [userName, setUserName] = React.useState("");
-    const [userDescription, setUserDescription] = React.useState("");
-    const [userAvatar, setUserAvatar] = React.useState("");
+import { CurrentUserContext} from '../contexts/CurrentUserContext';
 
-    const [cards, setCards] = React.useState([]);
+function Main(props) {
+
+    const currentUser = React.useContext(CurrentUserContext);
+    //console.log(currentUser)
+    
 
     const [statusVisible, changeStatus] = React.useState("");
+
+    // const [currentUser.name, changeName] = React.useState("");
+    // const [currentUser.avatar, changeAvatar] = React.useState("");
+    // const [currentUser.about, changeAbout] = React.useState("");
     
     React.useEffect(() => {
         api.loadUserInfo()
             .then((res) => {
+                // changeName(res.name)
+                // changeAvatar(res.avatar)
+                // changeAbout(res.about)
                 
-                setUserName(res.name);
-                setUserDescription(res.about);
-                setUserAvatar(res.avatar)
             })
             .catch((err) => {
                 console.log(err);
             })
     }, [])
 
-    React.useEffect(() => {
-        api.getInitialCards()
-            .then((res) => {
-                
-                setCards(res)
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, [])
+   
     const profileAvatarHover = () => {
         changeStatus("profile__avatar-overlay_visible")
         
@@ -44,26 +39,28 @@ function Main(props) {
        
     }
 
+    
+
     return (
         <main className="main">
             <section className="profile">
                 <div className="profile__avatar-container" onClick={props.onEditAvatar} onMouseOver={profileAvatarHover} onMouseOut={profileAvatarHoverNot}>
-                    <img className="profile__avatar" src={userAvatar} alt="Аватар" />
+                    <img className="profile__avatar" src={currentUser.avatar} alt="Аватар" />
                     <div className={`profile__avatar-overlay ${statusVisible}`}></div>
                 </div>
 
                 <div className="profile__info">
-                    <h1 className="profile__name" id="profile__name">{userName}</h1>
+                    <h1 className="profile__name" id="profile__name">{currentUser.name}</h1>
                     <button className="profile__edit-button-box" type="button" onClick={props.onEditProfile}></button>
-                    <p className="profile__status" id="profile__status">{userDescription}</p>
+                    <p className="profile__status" id="profile__status">{currentUser.about}</p>
                 </div>
                 <button className="profile__add-button-box" type="button" onClick={props.onAddPlace}></button>
             </section>
             <section className="elements">
 
-                {cards.map((element) => {
+                {props.cards.map((element) => {
                    
-                   return(<Card key={element._id} cardsToAdd={element} onCardClick={props.onCardClick}/>) 
+                   return(<Card key={element._id} onCardDelete ={props.onCardDelete} cardsToAdd={element} onCardClick={props.onCardClick} onCardLike={props.onCardLike}/>) 
                 })}
 
 
