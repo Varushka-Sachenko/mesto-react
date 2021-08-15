@@ -5,7 +5,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 function Card(props) {
 
     const currentUser = React.useContext(CurrentUserContext);
-    console.log(props.cardsToAdd)
+    //console.log(props.cardsToAdd)
     const isOwn = props.cardsToAdd.owner._id === currentUser._id;
 
     // Создаём переменную, которую после зададим в `className` для кнопки удаления

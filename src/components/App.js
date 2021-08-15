@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { classApi as api } from '../utils/api'
+import api from '../utils/api.js'
 import Header from './Header'
 import Main from './Main'
 import Footer from './Footer'

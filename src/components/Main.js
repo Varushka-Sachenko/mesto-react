@@ -1,5 +1,5 @@
 import React from 'react'
-import { classApi as api } from '../utils/api'
+import api from '../utils/api.js'
 import Card from './Card';
 
 import { CurrentUserContext} from '../contexts/CurrentUserContext';
@@ -15,6 +15,7 @@ function Main(props) {
     // const [currentUser.name, changeName] = React.useState("");
     // const [currentUser.avatar, changeAvatar] = React.useState("");
     // const [currentUser.about, changeAbout] = React.useState("");
+    //console.log(api)
     
     React.useEffect(() => {
         api.loadUserInfo()

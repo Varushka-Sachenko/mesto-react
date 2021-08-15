@@ -69,6 +69,7 @@ class Api {
       })
     })
       .then(res => {
+        console.log(res)
         return this._checkResult(res)
       })
       .then(res => {
@@ -191,4 +192,4 @@ const classApi = new Api({
   token: 'a94d4dc8-3936-43d8-a3b5-2773303eb737'
 })
 
-export default classApi 
+export default classApi;
