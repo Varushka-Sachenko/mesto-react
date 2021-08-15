@@ -191,4 +191,4 @@ const classApi = new Api({
   token: 'a94d4dc8-3936-43d8-a3b5-2773303eb737'
 })
 
-export { classApi }
+export default{ classApi }
