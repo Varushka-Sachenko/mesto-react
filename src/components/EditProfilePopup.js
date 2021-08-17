@@ -23,10 +23,9 @@ export default function EditProfilePopup(props) {
         setDescription(e.target.value);
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
         // Запрещаем браузеру переходить по адресу формы
-        //e.preventDefault();
-      console.log('change')
+        event.preventDefault();
         // Передаём значения управляемых компонентов во внешний обработчик
         props.onUpdateUser({
           name,
@@ -35,7 +34,7 @@ export default function EditProfilePopup(props) {
       } 
 
     return (
-        <PopupWithForm buttonText="Сохранить" onSubmit={() => handleSubmit()} onClose={props.onClose} isOpen={props.isOpen} title="Редактировать профиль" name="field_edit" children={
+        <PopupWithForm buttonText="Сохранить" onSubmit={handleSubmit} onClose={props.onClose} isOpen={props.isOpen} title="Редактировать профиль" name="field_edit" children={
             <>
                 <input name="name" className="form__field-text form__field-text_input_name" placeholder="Имя" type="text"
                     size="40" id="username" required minLength="2" defaultValue={name} maxLength="40" onChange={handleUserName} />

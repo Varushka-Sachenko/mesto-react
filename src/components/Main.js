@@ -1,5 +1,5 @@
 import React from 'react'
-import api from '../utils/api.js'
+//import api from '../utils/api.js'
 import Card from './Card';
 
 import { CurrentUserContext} from '../contexts/CurrentUserContext';
@@ -11,25 +11,6 @@ function Main(props) {
     
 
     const [statusVisible, changeStatus] = React.useState("");
-
-    // const [currentUser.name, changeName] = React.useState("");
-    // const [currentUser.avatar, changeAvatar] = React.useState("");
-    // const [currentUser.about, changeAbout] = React.useState("");
-    //console.log(api)
-    
-    React.useEffect(() => {
-        api.loadUserInfo()
-            .then((res) => {
-                // changeName(res.name)
-                // changeAvatar(res.avatar)
-                // changeAbout(res.about)
-                
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, [])
-
    
     const profileAvatarHover = () => {
         changeStatus("profile__avatar-overlay_visible")
@@ -58,9 +39,9 @@ function Main(props) {
                 <button className="profile__add-button-box" type="button" onClick={props.onAddPlace}></button>
             </section>
             <section className="elements">
-
+                
                 {props.cards.map((element) => {
-                   
+                
                    return(<Card key={element._id} onCardDelete ={props.onCardDelete} cardsToAdd={element} onCardClick={props.onCardClick} onCardLike={props.onCardLike}/>) 
                 })}
 

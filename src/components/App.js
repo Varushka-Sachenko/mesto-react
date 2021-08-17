@@ -12,7 +12,7 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup'
 import AddPlacePopup from './AddPlacePopup'
 
-import { CurrentUserContext, currentUserFromContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext, defaultUserInfo } from '../contexts/CurrentUserContext';
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
 
   const [selectedCard, setSelectedCard] = React.useState({ name: "", link: "" });
 
-  const [currentUser, setCurrentUser] = React.useState(currentUserFromContext);
+  const [currentUser, setCurrentUser] = React.useState(defaultUserInfo);
 
   const [cards, setCards] = React.useState([]);
 
@@ -56,23 +56,32 @@ function App() {
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
         
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    }).catch((err) => {
+      console.log(err);
     });
 } 
 
 const handleCardDelete = (card)=>{
     if (card.owner._id === currentUser._id){
         api.deleteCard(card._id)
+        .then(() => {
+          const cardsCopy = cards.filter(elem => elem._id !==card._id);
+          setCards(cardsCopy)
+        }
+          )
+        .catch((err) => {
+          console.log(err);
+        })
     }
     
-    const cardsCopy = cards.filter(elem => elem._id !==card._id);
-    setCards(cardsCopy)
+    
 }
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true)
   }
 
   const handleEditProfileClick = () => {
-    console.log('click')
+   // console.log('click')
     setIsEditProfilePopupOpen(true)
   }
 
@@ -93,18 +102,44 @@ const handleCardDelete = (card)=>{
   }
 
   const handleUpdateAvatar = (link) => {
+    //console.log(link)
     api.changeAvatar(link)
-    setCurrentUser({avatar: link})
+    .then(() => {
+      setCurrentUser({name:currentUser.name, about:currentUser.about, avatar: link.avatar})
+      setIsEditAvatarPopupOpen(false)
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    
   }
 
   const handleUpdateUser = (data) => {
-    api.editProfileINfo(data);
-    setCurrentUser(data)
+    api.editProfileINfo(data)
+    .then(() => {
+      setCurrentUser({name:data.name, about:data.about, avatar: currentUser.avatar})
+      setIsEditProfilePopupOpen(false)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    
   }
 
   const handleAddPlaceSubmit = (newCard) => {
     api.addNewCard(newCard)
-    setCards([newCard, ...cards]); 
+    .then((res) => {
+      
+      setCards([res, ...cards]);
+      //console.log(cards)
+      setIsAddPlacePopupOpen(false)
+    }
+      
+    )
+    .catch((err) => {
+      console.log(err);
+    })
+    
   }
 
   return (
@@ -119,7 +154,7 @@ const handleCardDelete = (card)=>{
           <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
           <AddPlacePopup  onSubmit={handleAddPlaceSubmit} onClose={closeAllPopups} isOpen={isAddPlacePopupOpen}/>
           <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} onSubmit={handleUpdateAvatar} isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} />
-          <PopupWithForm buttonText="Да" onClose={closeAllPopups} isOpen={false} title="Вы уверены?" name="delete-card" children="" />
+          <PopupWithForm buttonText="Да" onClose={closeAllPopups} isOpen={false} title="Вы уверены?" name="delete-card" />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         </div>
       </div>

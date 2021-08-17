@@ -1,20 +1,20 @@
 import React from 'react'
 
 import PopupWithForm from './PopupWithForm';
-//import { CurrentUserContext} from '../contexts/CurrentUserContext';
+
 
 
 export default function EditAvatarPopup (props){
-   // const currentUser = React.useContext(CurrentUserContext);
 
     const avatarRef = React.useRef();
 
-    function handleSubmit() {
-      //e.preventDefault();
+    function handleSubmit(e) {
+       e.preventDefault();
     
       props.onUpdateAvatar({
-        avatar: avatarRef.current,
+        avatar: avatarRef.current.value,
       });
+      avatarRef.current.value = ''
     } 
     return (
         <PopupWithForm buttonText="Сохранить" onSubmit={handleSubmit} onClose={props.onClose} isOpen={props.isOpen} title="Обновить аватар" name="edit-avatar" children={

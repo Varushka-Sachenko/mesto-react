@@ -56,7 +56,7 @@ class Api {
   }
 
   editProfileINfo(data) {
-    console.log(data)
+    
     return fetch('https://mesto.nomoreparties.co/v1/cohort-24/users/me', {
       method: 'PATCH',
       headers: {
@@ -65,11 +65,11 @@ class Api {
       },
       body: JSON.stringify({
         name: data.name,
-        about: data.info,
+        about: data.about,
       })
     })
       .then(res => {
-        console.log(res)
+        
         return this._checkResult(res)
       })
       .then(res => {
@@ -85,7 +85,7 @@ class Api {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: data.title,
+        name: data.name,
         link: data.link,
       })
     })
@@ -166,6 +166,7 @@ class Api {
   }
 
   changeAvatar(link) {
+    //console.log(link)
     return fetch(`https://mesto.nomoreparties.co/v1/cohort-24/users/me/avatar`, {
       method: 'PATCH',
       headers: {
@@ -173,7 +174,7 @@ class Api {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        avatar: link,
+        avatar: link.avatar,
       })
     })
       .then(res => {
