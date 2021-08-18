@@ -8,13 +8,19 @@ export default function EditAvatarPopup (props){
 
     const avatarRef = React.useRef();
 
+    React.useEffect(() => {
+      avatarRef.current.value = ''
+      
+    }, [props.isOpen])
+
     function handleSubmit(e) {
        e.preventDefault();
     
       props.onUpdateAvatar({
         avatar: avatarRef.current.value,
       });
-      avatarRef.current.value = ''
+      
+      //avatarRef.current.value = ''
     } 
     return (
         <PopupWithForm buttonText="Сохранить" onSubmit={handleSubmit} onClose={props.onClose} isOpen={props.isOpen} title="Обновить аватар" name="edit-avatar" children={

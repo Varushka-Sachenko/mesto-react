@@ -101,12 +101,15 @@ const handleCardDelete = (card)=>{
 
   }
 
+  
+
   const handleUpdateAvatar = (link) => {
-    //console.log(link)
+    
     api.changeAvatar(link)
     .then(() => {
-      setCurrentUser({name:currentUser.name, about:currentUser.about, avatar: link.avatar})
+      setCurrentUser({...currentUser, avatar: link.avatar})
       setIsEditAvatarPopupOpen(false)
+      //console.log(currentUser)
     })
     .catch((err) => {
       console.log(err);
@@ -117,7 +120,7 @@ const handleCardDelete = (card)=>{
   const handleUpdateUser = (data) => {
     api.editProfileINfo(data)
     .then(() => {
-      setCurrentUser({name:data.name, about:data.about, avatar: currentUser.avatar})
+      setCurrentUser({...currentUser, name:data.name, about:data.about})
       setIsEditProfilePopupOpen(false)
     })
     .catch((err) => {
